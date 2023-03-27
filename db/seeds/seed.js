@@ -92,15 +92,15 @@ const seed = ({ categoryData, commentData, reviewData, userData }) => {
             created_at,
             votes
           }) => [
-            title,
-            category,
-            designer,
-            owner,
-            review_body,
-            review_img_url,
-            created_at,
-            votes
-          ]
+              title,
+              category,
+              designer,
+              owner,
+              review_body,
+              review_img_url,
+              created_at,
+              votes
+            ]
         )
       );
 
@@ -124,5 +124,8 @@ const seed = ({ categoryData, commentData, reviewData, userData }) => {
       return db.query(insertCommentsQueryStr);
     });
 };
+
+
+
 
 module.exports = seed;
