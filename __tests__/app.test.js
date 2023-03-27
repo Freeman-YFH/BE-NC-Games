@@ -12,8 +12,7 @@ describe('GET - /api/categories', () => {
         return request(app)
             .get('/api/categories')
             .expect(200)
-            .then((data) => {
-                const { body } = data
+            .then(({ body }) => {
                 expect(body).toHaveLength(4);
                 body.forEach((item) => {
                     expect(item).toHaveProperty('slug', expect.any(String));
@@ -25,9 +24,8 @@ describe('GET - /api/categories', () => {
         return request(app)
             .get('/api/wrongpath')
             .expect(404)
-            .then((data) => {
-                expect(data.body.msg).toBe("invalid path");
+            .then(({ body }) => {
+                expect(body.msg).toBe("invalid path");
             })
-
     });
 });
