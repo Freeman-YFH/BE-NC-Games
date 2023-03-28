@@ -1,7 +1,7 @@
 const testData = require("../db/data/test-data/index");
 const request = require("supertest");
-const app = require("../app")
-const seed = require("../db/seeds/seed")
+const app = require("../app");
+const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 
 beforeEach(() => { return seed(testData) });
