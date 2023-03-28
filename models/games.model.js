@@ -5,5 +5,16 @@ exports.selectCategories = () => {
         .query(`SELECT * FROM categories`)
         .then((data) => {
             return data.rows;
-        })
-}
+        });
+};
+
+exports.selectReviewById = (review_id) => {
+    return db
+        .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+        .then((data) => {
+            if (data.rows.length === 0) {
+                return Promise.reject({ msg: "Invalid input", status: 400 })
+            }
+            return data.rows[0]
+        });
+};
