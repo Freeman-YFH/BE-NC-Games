@@ -68,14 +68,13 @@ describe('GET - /api/reviews/:review_id', () => {
     });
 });
 
-describe.only('GET - /api/reviews', () => {
+describe('GET - /api/reviews', () => {
     it('200: GET response with a array of reviews objects', () => {
         return request(app)
             .get("/api/reviews")
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
-                console.log(review)
                 expect(review).toHaveLength(13);
                 review.forEach((item) => {
                     expect(item).toMatchObject({
@@ -90,6 +89,7 @@ describe.only('GET - /api/reviews', () => {
                         comment_count: expect.any(String)
                     })
                 })
+                // expect(review).toBeSortedBy("created_at", { descending: true })
             })
     });
     it('404: GET response with error message when input invalid path', () => {
