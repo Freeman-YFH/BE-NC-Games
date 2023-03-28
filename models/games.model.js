@@ -26,3 +26,8 @@ exports.selectReviews = () => {
             return data.rows;
         });
 };
+
+exports.selectCommentsByReviewId = (review_id) => {
+    return db
+        .query(`SELECT * FROM comments`)
+}
