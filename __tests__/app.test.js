@@ -14,8 +14,9 @@ describe('GET - /api/categories', () => {
             .get('/api/categories')
             .expect(200)
             .then(({ body }) => {
-                expect(body).toHaveLength(4);
-                body.forEach((item) => {
+                const { result } = body
+                expect(result).toHaveLength(4);
+                result.forEach((item) => {
                     expect(item).toHaveProperty('slug', expect.any(String));
                     expect(item).toHaveProperty("description", expect.any(String));
                 })

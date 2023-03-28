@@ -11,7 +11,7 @@ app.get("/api/categories", getCategories);
 app.get("/api/reviews/:review_id", getReviewById);
 
 app.use('*', (req, res, next) => {
-    next(err)
+    res.status(404).send({ msg: "Invalid path" })
 });
 
 app.use((err, req, res, next) => {
@@ -20,9 +20,7 @@ app.use((err, req, res, next) => {
     } else if (err.status && err.msg) {
         res.status(err.status).send({ msg: err.msg })
     }
-    else {
-        res.status(404).send({ msg: "Invalid path" })
-    }
+
 });
 
 module.exports = app;
