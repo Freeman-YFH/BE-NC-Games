@@ -18,3 +18,11 @@ exports.selectReviewById = (review_id) => {
             return data.rows[0]
         });
 };
+
+exports.selectReviews = () => {
+    return db
+        .query(`SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY comment_count DESC;`)
+        .then((data) => {
+            return data.rows;
+        });
+};

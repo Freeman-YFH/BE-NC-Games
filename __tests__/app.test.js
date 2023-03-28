@@ -67,3 +67,37 @@ describe('GET - /api/reviews/:review_id', () => {
             .then(({ body }) => { expect(body.msg).toBe("Invalid input"); })
     });
 });
+
+describe('GET - /api/reviews', () => {
+    it('200: GET response with a array of reviews objects', () => {
+        return request(app)
+            .get("/api/reviews")
+            .expect(200)
+            .then(({ body }) => {
+                const { result } = body;
+                expect(result).toHaveLength(13);
+                result.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        review_body: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+            })
+    });
+    it('404: GET response with error message when input invalid path', () => {
+        return request(app)
+            .get('/api/wrongpath')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid path");
+            })
+    });
+});
