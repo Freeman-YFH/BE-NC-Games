@@ -24,6 +24,7 @@ exports.getReviews = (req, res, next) => {
     selectReviews()
         .then((result) => {
             res.status(200).send({ result });
+
         });
 };
 
