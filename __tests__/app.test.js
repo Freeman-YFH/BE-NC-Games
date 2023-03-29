@@ -109,6 +109,7 @@ describe.only('GET - /api/reviews/:review_id/comments', () => {
             .expect(200)
             .then(({ body }) => {
                 const { comments } = body;
+                console.log(comments)
                 expect(comments).toHaveLength(3);
             })
     });
