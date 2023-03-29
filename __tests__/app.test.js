@@ -131,12 +131,20 @@ describe('GET - /api/reviews/:review_id/comments', () => {
                 expect(body.msg).toBe("Bad request");
             })
     });
-    it('400: GET response with error message when passed number doesn`t exist', () => {
+    it('404: GET response with error message when passed number doesn`t exist', () => {
         return request(app)
             .get("/api/reviews/9999/comments")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("comment not found");
+            })
+    });
+    it('200: GET response with error message when ID exist but without any comment', () => {
+        return request(app)
+            .get("/api/reviews/1/comments")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.comments).toEqual([])
             })
     });
 });

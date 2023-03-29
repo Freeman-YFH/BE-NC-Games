@@ -31,9 +31,17 @@ exports.selectCommentsByReviewId = (review_id) => {
     return db
         .query(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [review_id])
         .then((data) => {
-            if (data.rows.length === 0) {
-                return Promise.reject({ msg: "Bad request", status: 400 })
-            }
             return data.rows;
         });
 };
+
+exports.checkReviewIdExist = (review_id) => {
+    return db
+        .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+        .then((data) => {
+            if (data.rows.length === 0) {
+                return Promise.reject({ status: 404, msg: "comment not found" })
+            }
+            return []
+        })
+}

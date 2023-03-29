@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId } = require("../models/games.model");
+const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist } = require("../models/games.model");
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
@@ -29,9 +29,14 @@ exports.getReviews = (req, res, next) => {
 
 exports.getCommentsByReviewId = (req, res, next) => {
     const { review_id } = req.params
-    selectCommentsByReviewId(review_id)
+    return selectCommentsByReviewId(review_id)
         .then((comments) => {
+            if (comments.length === 0) {
+                return checkReviewIdExist(review_id)
+            }
             res.status(200).send({ comments });
+        }).then((comments) => {
+            res.status(200).send({ comments })
         })
         .catch((err) => {
             next(err)
