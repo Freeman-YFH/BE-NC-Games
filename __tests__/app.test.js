@@ -89,7 +89,7 @@ describe('GET - /api/reviews', () => {
                         comment_count: expect.any(String)
                     })
                 })
-                // expect(review).toBeSortedBy("created_at", { descending: true })
+                expect(review).toBeSortedBy("created_at", { descending: true })
             })
     });
     it('404: GET response with error message when input invalid path', () => {
