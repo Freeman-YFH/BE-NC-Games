@@ -171,7 +171,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
                 expect(body.msg).toBe("resource not exist");
             })
     });
-    it.only('404: POST response with error message when input a invalid username', () => {
+    it('404: POST response with error message when input a invalid username', () => {
         const newComment = { username: 'aaa', body: "Gaming is GOOD" };
         return request(app)
             .post("/api/reviews/2/comments")
