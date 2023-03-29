@@ -39,17 +39,29 @@ exports.selectCommentsByReviewId = (review_id) => {
         });
 };
 
-exports.insertCommentsByReviewId = (comment) => {
-    const { username, body } = comment;
-    return db.query(
-        `INSERT INTO comments
-        (author, body)
-        VALUES
-        ($1, $2)
-        RETURNING *;`,
-        [username, body]
-    )
+exports.checkReviewIdExist = (review_id) => {
+    return db
+        .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
         .then((data) => {
-            console.log(data)
+            if (data.rows.length === 0) {
+                return Promise.reject({ status: 404, msg: "comment not found" });
+            }
+            return [];
+        })
+};
+
+exports.insertCommentsByReviewId = (comment, id) => {
+    const { username, body } = comment;
+    const { review_id } = id
+    return db
+        .query(`INSERT INTO comments 
+        (author, body, review_id) 
+        VALUES 
+        ($1, $2, $3) 
+        RETURNING *;`,
+            [username, body, review_id]
+        )
+        .then(({ rows }) => {
+            return (rows[0])
         })
 }

@@ -142,14 +142,43 @@ describe('GET - /api/reviews/:review_id/comments', () => {
 });
 
 describe('POST - /api/reviews/:review_id/comments', () => {
-    xit('201: POST response with adding new object into database and sending out message', () => {
-        const newComment = { username: "AAA", body: "Gaming is GOOD" }
+    it('201: POST response with adding new object into database and sending out message', () => {
+        const newComment = { username: 'bainesface', body: "Gaming is GOOD" }
         return request(app)
-            .post("/api/reviews/4/comments")
+            .post("/api/reviews/2/comments")
             .send(newComment)
             .expect(201)
             .then(({ body }) => {
-                console.log("POST ====>", body)
+                const { comment } = body
+                expect(comment.body).toBe("Gaming is GOOD");
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    body: expect.any(String),
+                    votes: expect.any(Number),
+                    author: expect.any(String),
+                    review_id: expect.any(Number),
+                    created_at: expect.any(String)
+                });
+            })
+    });
+    it('404: POST response with error message when input a invalid review_id', () => {
+        const newComment = { username: 'bainesface', body: "Gaming is GOOD" };
+        return request(app)
+            .post("/api/reviews/999/comments")
+            .send(newComment)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("resource not exist");
+            })
+    });
+    it.only('404: POST response with error message when input a invalid username', () => {
+        const newComment = { username: 'aaa', body: "Gaming is GOOD" };
+        return request(app)
+            .post("/api/reviews/2/comments")
+            .send(newComment)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("resource not exist");
             })
     });
 });
