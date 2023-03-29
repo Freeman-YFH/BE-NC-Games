@@ -31,6 +31,9 @@ exports.selectCommentsByReviewId = (review_id) => {
     return db
         .query(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [review_id])
         .then((data) => {
+            if (data.rows.length === 0) {
+                return Promise.reject({ msg: "Bad request", status: 400 })
+            }
             return data.rows;
         });
 };

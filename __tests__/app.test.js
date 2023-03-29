@@ -103,7 +103,7 @@ describe('GET - /api/reviews', () => {
     });
 });
 
-describe.only('GET - /api/reviews/:review_id/comments', () => {
+describe('GET - /api/reviews/:review_id/comments', () => {
     it('200: GET response with an array of comments for the given review_id', () => {
         return request(app)
             .get("/api/reviews/2/comments")
@@ -127,8 +127,16 @@ describe.only('GET - /api/reviews/:review_id/comments', () => {
         return request(app)
             .get("/api/reviews/not-a-number/comments")
             .expect(400)
-            .then(({ data }) => {
-                // expect(data.msg).toBe("Bad request");
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            })
+    });
+    it('400: GET response with error message when passed number doesn`t exist', () => {
+        return request(app)
+            .get("/api/reviews/9999/comments")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
             })
     });
 });
