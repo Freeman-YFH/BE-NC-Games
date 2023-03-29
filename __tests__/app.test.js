@@ -140,3 +140,16 @@ describe('GET - /api/reviews/:review_id/comments', () => {
             })
     });
 });
+
+describe.only('POST - /api/reviews/:review_id/comments', () => {
+    it('201: POST response with adding new object into database and sending out message', () => {
+        const newComment = { username: "AAA", body: "Gaming is GOOD" }
+        return request(app)
+            .post("/api/reviews/4/comments")
+            .send(newComment)
+            .expect(201)
+            .then(({ body }) => {
+                console.log("POST ====>", body)
+            })
+    });
+});

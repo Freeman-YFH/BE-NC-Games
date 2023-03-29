@@ -1,6 +1,6 @@
 const db = require("./db/connection");
 const express = require("express");
-const { getCategories, getReviewById, getReviews, getCommentsByReviewId } = require("./controllers/games.controller");
+const { getCategories, getReviewById, getReviews, getCommentsByReviewId, postCommentsByReviewId } = require("./controllers/games.controller");
 
 const app = express();
 
@@ -12,7 +12,9 @@ app.get("/api/reviews/:review_id", getReviewById);
 
 app.get("/api/reviews", getReviews);
 
-app.get("/api/reviews/:review_id/comments", getCommentsByReviewId)
+app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
+
+app.post("/api/reviews/:review_id/comments", postCommentsByReviewId);
 
 app.use('*', (req, res, next) => {
     res.status(404).send({ msg: "Invalid path" })
