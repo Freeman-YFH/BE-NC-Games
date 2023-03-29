@@ -182,3 +182,52 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             })
     });
 });
+
+describe('PATCH - /api/reviews/:review_id', () => {
+    it('200: PATCH response with updating the votes number equal to 1 for the input review_id', () => {
+        const newVote = { inc_votes: 1 };
+        return request(app)
+            .patch("/api/reviews/1")
+            .send(newVote)
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body
+                expect(review).toMatchObject({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_img_url: expect.any(String),
+                    review_body: expect.any(String),
+                    category: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                });
+                const input = { votes: 1 }
+                expect(input.votes + newVote.inc_votes).toBe(review.votes);
+            })
+    });
+    it('200: PATCH response with updating the votes number equal to -100 for the input review_id', () => {
+        const newVote = { inc_votes: -100 };
+        return request(app)
+            .patch("/api/reviews/1")
+            .send(newVote)
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body
+                expect(review).toMatchObject({
+                    review_id: expect.any(Number),
+                    title: expect.any(String),
+                    designer: expect.any(String),
+                    owner: expect.any(String),
+                    review_img_url: expect.any(String),
+                    review_body: expect.any(String),
+                    category: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                });
+                const input = { votes: 1 }
+                expect(input.votes + newVote.inc_votes).toBe(review.votes);
+            })
+    });
+});
