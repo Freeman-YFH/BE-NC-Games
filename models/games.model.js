@@ -40,8 +40,8 @@ exports.checkReviewIdExist = (review_id) => {
         .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
         .then((data) => {
             if (data.rows.length === 0) {
-                return Promise.reject({ status: 404, msg: "comment not found" })
+                return Promise.reject({ status: 404, msg: "comment not found" });
             }
-            return []
+            return [];
         })
-}
+};
