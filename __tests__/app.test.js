@@ -120,6 +120,15 @@ describe.only('GET - /api/reviews/:review_id/comments', () => {
                         created_at: expect.any(String)
                     })
                 })
+                expect(comments).toBeSortedBy("created_at", { descending: true });
+            })
+    });
+    it('400: GET response with error message when ID input is not a number', () => {
+        return request(app)
+            .get("/api/reviews/not-a-number/comments")
+            .expect(400)
+            .then(({ data }) => {
+                expect(data.msg).toBe("Bad request");
             })
     });
 });
