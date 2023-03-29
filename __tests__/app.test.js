@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = require("../app")
 const seed = require("../db/seeds/seed")
 const db = require("../db/connection");
+const { string } = require("pg-format");
 
 beforeEach(() => { return seed(testData) });
 
@@ -109,8 +110,16 @@ describe.only('GET - /api/reviews/:review_id/comments', () => {
             .expect(200)
             .then(({ body }) => {
                 const { comments } = body;
-                console.log(comments)
                 expect(comments).toHaveLength(3);
+                comments.forEach((item) => {
+                    expect(item).toMatchObject({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String), votes: expect.any(Number),
+                        author: expect.any(String),
+                        review_id: expect.any(Number),
+                        created_at: expect.any(String)
+                    })
+                })
             })
     });
 });
