@@ -4,6 +4,7 @@ const app = require("../app");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const { string } = require("pg-format");
+const { user } = require("pg/lib/defaults");
 
 beforeEach(() => { return seed(testData) });
 
@@ -290,6 +291,31 @@ describe('DELETE - /api/comments/:comment_id', () => {
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe("Bad request");
+            })
+    });
+});
+
+describe('GET - /api/users', () => {
+    it('200: GET response with an array of objects', () => {
+        return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({ body }) => {
+                const { users } = body;
+                expect(users).toHaveLength(4);
+                users.forEach((item) => {
+                    expect(item).toHaveProperty("username", expect.any(String));
+                    expect(item).toHaveProperty("name", expect.any(String));
+                    expect(item).toHaveProperty("avatar_url", expect.any(String))
+                })
+            })
+    });
+    it('404: GET response with error with invalid path name', () => {
+        return request(app)
+            .get("/api/wrongpath")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid path");
             })
     });
 });
