@@ -22,7 +22,7 @@ exports.selectReviewById = (review_id) => {
 
 exports.selectReviews = () => {
     return db
-        .query(`SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY comment_count DESC;`)
+        .query(`SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY created_at DESC;`)
         .then((data) => {
             return data.rows;
         });
@@ -32,9 +32,6 @@ exports.selectCommentsByReviewId = (review_id) => {
     return db
         .query(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [review_id])
         .then((data) => {
-            if (data.rows.length === 0) {
-                return Promise.reject({ msg: "Bad request", status: 400 })
-            }
             return data.rows;
         });
 };
@@ -44,7 +41,7 @@ exports.checkReviewIdExist = (review_id) => {
         .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
         .then((data) => {
             if (data.rows.length === 0) {
-                return Promise.reject({ status: 404, msg: "comment not found" });
+                return Promise.reject({ status: 404, msg: "review not found" });
             }
             return [];
         })
@@ -62,6 +59,7 @@ exports.insertCommentsByReviewId = (comment, id) => {
             [username, body, review_id]
         )
         .then(({ rows }) => {
-            return (rows[0])
-        })
-}
+            return (rows[0]);
+        });
+};
+
