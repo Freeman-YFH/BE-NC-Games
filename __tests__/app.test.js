@@ -163,13 +163,13 @@ describe('POST - /api/reviews/:review_id/comments', () => {
                     comment_id: expect.any(Number),
                     body: "Gaming is GOOD",
                     votes: expect.any(Number),
-                    author: expect.any(String),
+                    author: 'bainesface',
                     review_id: 2,
                     created_at: expect.any(String)
                 });
             })
     });
-    it('404: POST response with error message when input a invalid review_id', () => {
+    it('404: POST response with error message when input a review_id that doesn`t', () => {
         const newComment = { username: 'bainesface', body: "Gaming is GOOD" };
         return request(app)
             .post("/api/reviews/999/comments")
@@ -187,6 +187,26 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("resource not exist");
+            })
+    });
+    it('400: POST response with error when input invalid review_id', () => {
+        const newComment = { username: 'bainesface', body: "Gaming is GOOD" };
+        return request(app)
+            .post("/api/reviews/not-number/comments")
+            .send(newComment)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            })
+    });
+    it.only('400: POST response with error when missing required field in the object', () => {
+        const newComment = { username: 'bainesface' };
+        return request(app)
+            .post("/api/reviews/1/comments")
+            .send(newComment)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid input");
             })
     });
 });
