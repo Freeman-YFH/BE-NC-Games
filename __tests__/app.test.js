@@ -319,3 +319,28 @@ describe('GET - /api/users', () => {
             })
     });
 });
+
+describe.only('GET - /api/reviews (queries)', () => {
+    it('200: accept query by category value', () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                console.log(review)
+                expect(review[0]).toMatchObject({
+                    review_id: 2,
+                    title: 'Jenga',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_img_url:
+                        'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+                    category: 'dexterity',
+                    created_at: expect.any(String),
+                    votes: 5,
+                    comment_count: "3",
+                    review_id: 2
+                });
+            })
+    });
+});
