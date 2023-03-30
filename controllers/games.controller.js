@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId, updateReviewsByReview_id } = require("../models/games.model");
+const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId, updateReviewsByReview_id, deleteComments } = require("../models/games.model");
 
 
 
@@ -72,3 +72,12 @@ exports.patchReviewsByReview_id = (req, res, next) => {
         });
 };
 
+exports.deleteCommentsByCommentId = (req, res, next) => {
+    const { comment_id } = req.params
+    deleteComments(comment_id).then((comment) => {
+        res.status(204).send()
+    })
+        .catch((err) => {
+            next(err);
+        });
+};
