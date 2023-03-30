@@ -182,80 +182,13 @@ describe('POST - /api/reviews/:review_id/comments', () => {
     });
 });
 
-// describe('PATCH - /api/reviews/:review_id', () => {
-//     it('200: PATCH response with updating the votes number equal to 1 for the input review_id', () => {
-//         const newVote = { inc_votes: 1 };
+// describe('DELETE - /api/comments/:comment_id', () => {
+//     it('204: DELETE response with delete comments by comment_id', () => {
 //         return request(app)
-//             .patch("/api/reviews/1")
-//             .send(newVote)
-//             .expect(200)
+//             .delete("/api/comments/1")
+//             .expect(204)
 //             .then(({ body }) => {
-//                 const { review } = body
-//                 expect(review).toMatchObject({
-//                     review_id: 1,
-//                     title: expect.any(String),
-//                     designer: expect.any(String),
-//                     owner: expect.any(String),
-//                     review_img_url: expect.any(String),
-//                     review_body: expect.any(String),
-//                     category: expect.any(String),
-//                     created_at: expect.any(String),
-//                     votes: 2,
-//                 });
+//                 console.log(body)
 //             })
-//     });
-//     it('200: PATCH response with updating the votes number equal to -100 for the input review_id', () => {
-//         const newVote = { inc_votes: -100 };
-//         return request(app)
-//             .patch("/api/reviews/1")
-//             .send(newVote)
-//             .expect(200)
-//             .then(({ body }) => {
-//                 const { review } = body
-//                 expect(review).toMatchObject({
-//                     review_id: 1,
-//                     title: expect.any(String),
-//                     designer: expect.any(String),
-//                     owner: expect.any(String),
-//                     review_img_url: expect.any(String),
-//                     review_body: expect.any(String),
-//                     category: expect.any(String),
-//                     created_at: expect.any(String),
-//                     votes: -99,
-//                 });
-//             })
-//     });
-//     it('404: PATCH response with error when input a ID doesn`t exist', () => {
-//         const newVote = { inc_votes: 1 };
-//         return request(app)
-//             .patch("/api/reviews/999")
-//             .send(newVote)
-//             .expect(404)
-//             .then(({ body }) => {
-//                 expect(body.msg).toBe("resource not exist");
-//             })
-//     });
-//     it('404: PATCH response with error when No `inc_votes` on request body', () => {
-//         const newVote = {};
-//         return request(app)
-//             .patch("/api/reviews/1")
-//             .send(newVote)
-//             .expect(404)
-//             .then(({ body }) => {
-//                 expect(body.msg).toBe("resource not exist");
-//             })
-//     });
-//     it('400: PATCH response with error with Invalid `inc_votes`', () => {
-//         const newVote = { inc_votes: "cat" };
-//         return request(app)
-//             .patch("/api/reviews/1")
-//             .send(newVote)
-//             .expect(400)
-//             .then(({ body }) => {
-//                 expect(body.msg).toBe("Bad request");
-//             })
-//     });
-//     it('400: PATCH response with error with Invalid `inc_votes`', () => {
-
 //     });
 // });

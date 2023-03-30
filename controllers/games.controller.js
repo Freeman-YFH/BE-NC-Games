@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId } = require("../models/games.model");
+const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId, deleteComments } = require("../models/games.model");
 
 
 exports.getCategories = (req, res, next) => {
@@ -55,3 +55,8 @@ exports.postCommentsByReviewId = (req, res, next) => {
             next(err);
         })
 };
+
+exports.deleteCommentsByCommentId = (req, res, next) => {
+    const { comment_id } = req.params
+    deleteComments(comment_id)
+}
