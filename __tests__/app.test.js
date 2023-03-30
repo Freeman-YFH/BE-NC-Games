@@ -1,7 +1,7 @@
 const testData = require("../db/data/test-data/index");
 const request = require("supertest");
-const app = require("../app")
-const seed = require("../db/seeds/seed")
+const app = require("../app");
+const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const { string } = require("pg-format");
 
@@ -75,16 +75,15 @@ describe('GET - /api/reviews', () => {
             .get("/api/reviews")
             .expect(200)
             .then(({ body }) => {
-                const { result } = body;
-                expect(result).toHaveLength(13);
-                result.forEach((item) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
                     expect(item).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
                         designer: expect.any(String),
                         owner: expect.any(String),
                         review_img_url: expect.any(String),
-                        review_body: expect.any(String),
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
@@ -134,9 +133,9 @@ describe('GET - /api/reviews/:review_id/comments', () => {
     it('400: GET response with error message when passed number doesn`t exist', () => {
         return request(app)
             .get("/api/reviews/9999/comments")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
+                expect(body.msg).toBe("review not found");
             })
     });
 });
@@ -168,7 +167,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("resource not exist");
+                expect(body.msg).toBe("review not found");
             })
     });
     it('404: POST response with error message when input a invalid username', () => {
@@ -178,7 +177,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("resource not exist");
+                expect(body.msg).toBe("username not exist");
             })
     });
 });
@@ -267,3 +266,4 @@ describe('PATCH - /api/reviews/:review_id', () => {
             })
     });
 });
+
