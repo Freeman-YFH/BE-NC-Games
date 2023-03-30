@@ -276,10 +276,10 @@ describe('DELETE - /api/comments/:comment_id', () => {
                 expect(status).toBe(204);
             })
     });
-    it('400: DELETE response with error with invalid comment_id', () => {
+    it('404: DELETE response with error with invalid comment_id', () => {
         return request(app)
             .delete("/api/comments/999")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("comment_id not found");
             })
