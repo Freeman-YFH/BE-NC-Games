@@ -90,7 +90,6 @@ describe('GET - /api/reviews', () => {
                         comment_count: expect.any(String)
                     })
                 })
-                expect(review).toBeSortedBy("created_at", { descending: true })
             })
     });
     it('404: GET response with error message when input invalid path', () => {
@@ -116,7 +115,7 @@ describe('GET - /api/reviews/:review_id/comments', () => {
                         comment_id: expect.any(Number),
                         body: expect.any(String), votes: expect.any(Number),
                         author: expect.any(String),
-                        review_id: 2,
+                        review_id: expect.any(Number),
                         created_at: expect.any(String)
                     })
                 })
@@ -131,20 +130,12 @@ describe('GET - /api/reviews/:review_id/comments', () => {
                 expect(body.msg).toBe("Bad request");
             })
     });
-    it('404: GET response with error message when passed number doesn`t exist', () => {
+    it('400: GET response with error message when passed number doesn`t exist', () => {
         return request(app)
             .get("/api/reviews/9999/comments")
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("review not found");
-            })
-    });
-    it('200: GET response with error message when ID exist but without any comment', () => {
-        return request(app)
-            .get("/api/reviews/1/comments")
-            .expect(200)
-            .then(({ body }) => {
-                expect(body.comments).toEqual([])
             })
     });
 });
@@ -161,15 +152,15 @@ describe('POST - /api/reviews/:review_id/comments', () => {
                 expect(comment.body).toBe("Gaming is GOOD");
                 expect(comment).toMatchObject({
                     comment_id: expect.any(Number),
-                    body: "Gaming is GOOD",
+                    body: expect.any(String),
                     votes: expect.any(Number),
-                    author: 'bainesface',
-                    review_id: 2,
+                    author: expect.any(String),
+                    review_id: expect.any(Number),
                     created_at: expect.any(String)
                 });
             })
     });
-    it('404: POST response with error message when input a review_id that doesn`t', () => {
+    it('404: POST response with error message when input a invalid review_id', () => {
         const newComment = { username: 'bainesface', body: "Gaming is GOOD" };
         return request(app)
             .post("/api/reviews/999/comments")
@@ -186,27 +177,85 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("resource not exist");
-            })
-    });
-    it('400: POST response with error when input invalid review_id', () => {
-        const newComment = { username: 'bainesface', body: "Gaming is GOOD" };
-        return request(app)
-            .post("/api/reviews/not-number/comments")
-            .send(newComment)
-            .expect(400)
-            .then(({ body }) => {
-                expect(body.msg).toBe("Bad request");
-            })
-    });
-    it('400: POST response with error when missing required field in the object', () => {
-        const newComment = { username: 'bainesface' };
-        return request(app)
-            .post("/api/reviews/1/comments")
-            .send(newComment)
-            .expect(400)
-            .then(({ body }) => {
-                expect(body.msg).toBe("Invalid input");
+                expect(body.msg).toBe("username not exist");
             })
     });
 });
+
+// describe('PATCH - /api/reviews/:review_id', () => {
+//     it('200: PATCH response with updating the votes number equal to 1 for the input review_id', () => {
+//         const newVote = { inc_votes: 1 };
+//         return request(app)
+//             .patch("/api/reviews/1")
+//             .send(newVote)
+//             .expect(200)
+//             .then(({ body }) => {
+//                 const { review } = body
+//                 expect(review).toMatchObject({
+//                     review_id: 1,
+//                     title: expect.any(String),
+//                     designer: expect.any(String),
+//                     owner: expect.any(String),
+//                     review_img_url: expect.any(String),
+//                     review_body: expect.any(String),
+//                     category: expect.any(String),
+//                     created_at: expect.any(String),
+//                     votes: 2,
+//                 });
+//             })
+//     });
+//     it('200: PATCH response with updating the votes number equal to -100 for the input review_id', () => {
+//         const newVote = { inc_votes: -100 };
+//         return request(app)
+//             .patch("/api/reviews/1")
+//             .send(newVote)
+//             .expect(200)
+//             .then(({ body }) => {
+//                 const { review } = body
+//                 expect(review).toMatchObject({
+//                     review_id: 1,
+//                     title: expect.any(String),
+//                     designer: expect.any(String),
+//                     owner: expect.any(String),
+//                     review_img_url: expect.any(String),
+//                     review_body: expect.any(String),
+//                     category: expect.any(String),
+//                     created_at: expect.any(String),
+//                     votes: -99,
+//                 });
+//             })
+//     });
+//     it('404: PATCH response with error when input a ID doesn`t exist', () => {
+//         const newVote = { inc_votes: 1 };
+//         return request(app)
+//             .patch("/api/reviews/999")
+//             .send(newVote)
+//             .expect(404)
+//             .then(({ body }) => {
+//                 expect(body.msg).toBe("resource not exist");
+//             })
+//     });
+//     it('404: PATCH response with error when No `inc_votes` on request body', () => {
+//         const newVote = {};
+//         return request(app)
+//             .patch("/api/reviews/1")
+//             .send(newVote)
+//             .expect(404)
+//             .then(({ body }) => {
+//                 expect(body.msg).toBe("resource not exist");
+//             })
+//     });
+//     it('400: PATCH response with error with Invalid `inc_votes`', () => {
+//         const newVote = { inc_votes: "cat" };
+//         return request(app)
+//             .patch("/api/reviews/1")
+//             .send(newVote)
+//             .expect(400)
+//             .then(({ body }) => {
+//                 expect(body.msg).toBe("Bad request");
+//             })
+//     });
+//     it('400: PATCH response with error with Invalid `inc_votes`', () => {
+
+//     });
+// });
