@@ -116,7 +116,7 @@ describe('GET - /api/reviews/:review_id/comments', () => {
                         comment_id: expect.any(Number),
                         body: expect.any(String), votes: expect.any(Number),
                         author: expect.any(String),
-                        review_id: expect.any(Number),
+                        review_id: 2,
                         created_at: expect.any(String)
                     })
                 })
@@ -136,7 +136,7 @@ describe('GET - /api/reviews/:review_id/comments', () => {
             .get("/api/reviews/9999/comments")
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("comment not found");
+                expect(body.msg).toBe("review not found");
             })
     });
     it('200: GET response with error message when ID exist but without any comment', () => {
