@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { selectCategories, selectReviewById, selectReviews } = require("../models/games.model");
+const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist } = require("../models/games.model");
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
@@ -13,7 +13,7 @@ exports.getReviewById = (req, res, next) => {
     const { review_id } = req.params;
     selectReviewById(review_id)
         .then((review) => {
-            res.status(200).send({ review })
+            res.status(200).send({ review });
         })
         .catch((err) => {
             next(err);
@@ -23,6 +23,23 @@ exports.getReviewById = (req, res, next) => {
 exports.getReviews = (req, res, next) => {
     selectReviews()
         .then((review) => {
-            res.status(200).send({ review })
+            res.status(200).send({ review });
+
+        });
+};
+
+exports.getCommentsByReviewId = (req, res, next) => {
+    const { review_id } = req.params
+    return selectCommentsByReviewId(review_id)
+        .then((comments) => {
+            if (comments.length === 0) {
+                return checkReviewIdExist(review_id)
+            }
+            res.status(200).send({ comments });
+        }).then((comments) => {
+            res.status(200).send({ comments })
+        })
+        .catch((err) => {
+            next(err)
         });
 };

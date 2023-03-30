@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = require("../app");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
+const { string } = require("pg-format");
 
 beforeEach(() => { return seed(testData) });
 
@@ -98,6 +99,52 @@ describe('GET - /api/reviews', () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("Invalid path");
+            })
+    });
+});
+
+describe('GET - /api/reviews/:review_id/comments', () => {
+    it('200: GET response with an array of comments for the given review_id', () => {
+        return request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+            .then(({ body }) => {
+                const { comments } = body;
+                expect(comments).toHaveLength(3);
+                comments.forEach((item) => {
+                    expect(item).toMatchObject({
+                        comment_id: expect.any(Number),
+                        body: expect.any(String), votes: expect.any(Number),
+                        author: expect.any(String),
+                        review_id: 2,
+                        created_at: expect.any(String)
+                    })
+                })
+                expect(comments).toBeSortedBy("created_at", { descending: true });
+            })
+    });
+    it('400: GET response with error message when ID input is not a number', () => {
+        return request(app)
+            .get("/api/reviews/not-a-number/comments")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            })
+    });
+    it('404: GET response with error message when passed number doesn`t exist', () => {
+        return request(app)
+            .get("/api/reviews/9999/comments")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("review not found");
+            })
+    });
+    it('200: GET response with error message when ID exist but without any comment', () => {
+        return request(app)
+            .get("/api/reviews/1/comments")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.comments).toEqual([])
             })
     });
 });
