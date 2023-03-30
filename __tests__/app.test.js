@@ -153,10 +153,10 @@ describe('POST - /api/reviews/:review_id/comments', () => {
                 expect(comment.body).toBe("Gaming is GOOD");
                 expect(comment).toMatchObject({
                     comment_id: expect.any(Number),
-                    body: expect.any(String),
+                    body: "Gaming is GOOD",
                     votes: expect.any(Number),
                     author: expect.any(String),
-                    review_id: expect.any(Number),
+                    review_id: 2,
                     created_at: expect.any(String)
                 });
             })
