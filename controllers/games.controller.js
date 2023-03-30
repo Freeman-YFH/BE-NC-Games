@@ -58,5 +58,10 @@ exports.postCommentsByReviewId = (req, res, next) => {
 
 exports.deleteCommentsByCommentId = (req, res, next) => {
     const { comment_id } = req.params
-    deleteComments(comment_id)
-}
+    deleteComments(comment_id).then((comment) => {
+        res.status(204).send()
+    })
+        .catch((err) => {
+            next(err);
+        });
+};

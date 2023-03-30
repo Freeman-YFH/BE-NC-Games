@@ -76,7 +76,10 @@ exports.deleteComments = (comment_id) => {
     RETURNING *;`,
             [comment_id]
         )
-        .then((data) => {
-            console.log(data)
-        })
-}
+        .then(({ rows }) => {
+            if (rows.length === 0) {
+                return Promise.reject({ status: 400, msg: "comment_id not found" });
+            }
+            return (rows[0]);
+        });
+};

@@ -182,13 +182,29 @@ describe('POST - /api/reviews/:review_id/comments', () => {
     });
 });
 
-// describe('DELETE - /api/comments/:comment_id', () => {
-//     it('204: DELETE response with delete comments by comment_id', () => {
-//         return request(app)
-//             .delete("/api/comments/1")
-//             .expect(204)
-//             .then(({ body }) => {
-//                 console.log(body)
-//             })
-//     });
-// });
+describe('DELETE - /api/comments/:comment_id', () => {
+    it('204: DELETE response with 204 and no content', () => {
+        return request(app)
+            .delete("/api/comments/1")
+            .expect(204)
+            .then(({ status }) => {
+                expect(status).toBe(204);
+            })
+    });
+    it('400: DELETE response with error with invalid comment_id', () => {
+        return request(app)
+            .delete("/api/comments/999")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("comment_id not found");
+            })
+    });
+    it('400: DELETE response with error with not-a-number', () => {
+        return request(app)
+            .delete("/api/comments/not-a-number")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Bad request");
+            })
+    });
+});
