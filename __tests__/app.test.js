@@ -199,7 +199,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
                 expect(body.msg).toBe("Bad request");
             })
     });
-    it.only('400: POST response with error when missing required field in the object', () => {
+    it('400: POST response with error when missing required field in the object', () => {
         const newComment = { username: 'bainesface' };
         return request(app)
             .post("/api/reviews/1/comments")
