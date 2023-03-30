@@ -193,7 +193,7 @@ describe.only('PATCH - /api/reviews/:review_id', () => {
             .then(({ body }) => {
                 const { review } = body
                 expect(review).toMatchObject({
-                    review_id: expect.any(Number),
+                    review_id: 1,
                     title: expect.any(String),
                     designer: expect.any(String),
                     owner: expect.any(String),
@@ -201,13 +201,11 @@ describe.only('PATCH - /api/reviews/:review_id', () => {
                     review_body: expect.any(String),
                     category: expect.any(String),
                     created_at: expect.any(String),
-                    votes: expect.any(Number),
+                    votes: 2,
                 });
-                const input = { votes: 1 }
-                expect(input.votes + newVote.inc_votes).toBe(review.votes);
             })
     });
-    it('200: PATCH response with updating the votes number equal to -100 for the input review_id', () => {
+    it.only('200: PATCH response with updating the votes number equal to -100 for the input review_id', () => {
         const newVote = { inc_votes: -100 };
         return request(app)
             .patch("/api/reviews/1")
@@ -216,7 +214,7 @@ describe.only('PATCH - /api/reviews/:review_id', () => {
             .then(({ body }) => {
                 const { review } = body
                 expect(review).toMatchObject({
-                    review_id: expect.any(Number),
+                    review_id: 1,
                     title: expect.any(String),
                     designer: expect.any(String),
                     owner: expect.any(String),
@@ -224,10 +222,8 @@ describe.only('PATCH - /api/reviews/:review_id', () => {
                     review_body: expect.any(String),
                     category: expect.any(String),
                     created_at: expect.any(String),
-                    votes: expect.any(Number),
+                    votes: -99,
                 });
-                const input = { votes: 1 }
-                expect(input.votes + newVote.inc_votes).toBe(review.votes);
             })
     });
     it('404: PATCH response with error when input a ID doesn`t exist', () => {
@@ -247,7 +243,7 @@ describe.only('PATCH - /api/reviews/:review_id', () => {
             .send(newVote)
             .expect(404)
             .then(({ body }) => {
-                console.log(body)
+                expect(body.msg).toBe("resource not exist");
             })
     });
 });
