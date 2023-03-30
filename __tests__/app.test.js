@@ -241,9 +241,9 @@ describe('PATCH - /api/reviews/:review_id', () => {
         return request(app)
             .patch("/api/reviews/1")
             .send(newVote)
-            .expect(404)
+            .expect(400)
             .then(({ body }) => {
-                expect(body.msg).toBe("resource not exist");
+                expect(body.msg).toBe("Invalid input");
             })
     });
     it('400: PATCH response with error with Invalid `inc_votes`', () => {
@@ -254,6 +254,16 @@ describe('PATCH - /api/reviews/:review_id', () => {
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe("Bad request");
+            })
+    });
+    it('400: PATCH response with error with Some other property on request body', () => {
+        const newVote = { inc_votes: 1, name: 'Mitch' };
+        return request(app)
+            .patch("/api/reviews/1")
+            .send(newVote)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid input");
             })
     });
 });
