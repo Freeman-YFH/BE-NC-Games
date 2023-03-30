@@ -49,24 +49,31 @@ exports.checkReviewIdExist = (review_id) => {
 
 exports.insertCommentsByReviewId = (comment, id) => {
     const { username, body } = comment;
-    const { review_id } = id;
+    const { review_id } = id
+    return db
+        .query(`INSERT INTO comments 
+        (author, body, review_id) 
+        VALUES 
+        ($1, $2, $3) 
+        RETURNING *;`,
+            [username, body, review_id]
+        )
+        .then(({ rows }) => {
+            return (rows[0])
+        })
+}
 
-    return this.checkReviewIdExist(review_id).then(() => {
-        return db
-            .query(`INSERT INTO comments 
-            (author, body, review_id) 
-            VALUES 
-            ($1, $2, $3) 
-            RETURNING *;`,
-                [username, body, review_id]
-            )
-            .then(({ rows }) => {
-                return (rows[0]);
-            });
-
-
-
-    })
+exports.updateReviewsByReview_id = (review_id, inc_votes) => {
+    return db
+        .query(`
+        UPDATE reviews
+        SET votes = votes + $2
+        WHERE review_id = $1 RETURNING *;`,
+            [review_id, inc_votes])
+        .then(({ rows }) => {
+            if (rows.length === 0) {
+                return Promise.reject({ msg: "resource not exist", status: 400 })
+            }
+            return (rows[0]);
+        })
 };
-
-
