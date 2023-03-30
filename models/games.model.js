@@ -92,3 +92,4 @@ exports.deleteComments = (comment_id) => {
             return (rows[0]);
         });
 };
+
