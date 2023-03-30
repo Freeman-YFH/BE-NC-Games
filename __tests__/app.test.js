@@ -177,7 +177,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("username not exist");
+                expect(body.msg).toBe("review not found");
             })
     });
 });
