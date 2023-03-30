@@ -87,7 +87,7 @@ exports.deleteComments = (comment_id) => {
         )
         .then(({ rows }) => {
             if (rows.length === 0) {
-                return Promise.reject({ status: 400, msg: "comment_id not found" });
+                return Promise.reject({ status: 404, msg: "comment_id not found" });
             }
             return (rows[0]);
         });
