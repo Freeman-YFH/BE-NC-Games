@@ -75,7 +75,7 @@ exports.updateReviewsByReview_id = (review_id, inc_votes) => {
             [review_id, inc_votes])
         .then(({ rows }) => {
             if (rows.length === 0) {
-                return Promise.reject({ msg: "resource not exist", status: 404 })
+                return Promise.reject({ msg: "resource not exist", status: 400 })
             }
             return (rows[0]);
         })

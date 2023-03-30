@@ -226,17 +226,17 @@ describe('PATCH - /api/reviews/:review_id', () => {
                 });
             })
     });
-    it('404: PATCH response with error when input a ID doesn`t exist', () => {
+    it('400: PATCH response with error when input a ID doesn`t exist', () => {
         const newVote = { inc_votes: 1 };
         return request(app)
             .patch("/api/reviews/999")
             .send(newVote)
-            .expect(404)
+            .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe("resource not exist");
             })
     });
-    it('404: PATCH response with error when No `inc_votes` on request body', () => {
+    it('400: PATCH response with error when No `inc_votes` on request body', () => {
         const newVote = {};
         return request(app)
             .patch("/api/reviews/1")
