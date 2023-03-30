@@ -25,10 +25,14 @@ exports.getReviewById = (req, res, next) => {
 
 exports.getReviews = (req, res, next) => {
     const { category } = req.query;
-    selectReviews(category)
+    const { sort_by } = req.query;
+    const { order } = req.query;
+    selectReviews(category, sort_by, order)
         .then((review) => {
             res.status(200).send({ review });
-
+        })
+        .catch((err) => {
+            next(err);
         });
 };
 

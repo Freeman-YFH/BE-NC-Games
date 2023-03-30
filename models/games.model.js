@@ -20,7 +20,19 @@ exports.selectReviewById = (review_id) => {
         });
 };
 
-exports.selectReviews = (category) => {
+exports.selectReviews = (category, sort_by, order) => {
+    if (category && !['euro game', 'social deduction', 'dexterity', "children's games"].includes(category)) {
+        return Promise.reject({ status: 400, msg: 'Invalid order query' });
+    };
+
+    if (sort_by && !['review_id', 'title', 'designer', 'owner', 'review_img_url', 'category', 'created_at', 'votes', 'comment_count'].includes(sort_by)) {
+        return Promise.reject({ status: 400, msg: 'Invalid order query' });
+    };
+
+    if (order && !['asc', 'desc'].includes(order)) {
+        return Promise.reject({ status: 400, msg: 'Invalid order query' });
+    };
+
     let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
     const queryValues = [];
 
@@ -28,12 +40,22 @@ exports.selectReviews = (category) => {
         selectReviewsStr += ` WHERE category = $1
         GROUP BY reviews.review_id ORDER BY created_at DESC;`;
         queryValues.push(category);
+    } else if (sort_by) {
+        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`
+    } else if (order) {
+        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY created_at ${order};`;
+    } else {
+        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY created_at DESC;`;
     }
 
-    // .query(`SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id 
-    // GROUP BY reviews.review_id ORDER BY created_at DESC;`)
     return db.query(selectReviewsStr, queryValues)
         .then((data) => {
+            if (data.rows.length === 0) {
+                return Promise.reject({ status: 400, msg: [] });
+            }
+            if (data.rows.length === 1) {
+                return data.rows[0];
+            }
             return data.rows;
         });
 };

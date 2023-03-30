@@ -320,15 +320,14 @@ describe('GET - /api/users', () => {
     });
 });
 
-describe.only('GET - /api/reviews (queries)', () => {
-    it('200: accept query by category value', () => {
+describe('GET - /api/reviews (queries)', () => {
+    it('200: GET accept query by category value', () => {
         return request(app)
             .get("/api/reviews?category=dexterity")
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
-                console.log(review)
-                expect(review[0]).toMatchObject({
+                expect(review).toMatchObject({
                     review_id: 2,
                     title: 'Jenga',
                     designer: 'Leslie Scott',
@@ -341,6 +340,84 @@ describe.only('GET - /api/reviews (queries)', () => {
                     comment_count: "3",
                     review_id: 2
                 });
+            })
+    });
+    it('200: GET accept sort_by query that sort by any valid column (defaults to date) ', () => {
+        return request(app)
+            .get("/api/reviews?sort_by=votes")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+                expect(review).toBeSortedBy("votes", { descending: true });
+            })
+    });
+    it('200: GET accept order query that can be set to asc or desc for ascending or descending (defaults to descending)', () => {
+        return request(app)
+            .get("/api/reviews?order=asc")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+                expect(review).toBeSortedBy("created_at", { ascending: true });
+            })
+    });
+    it('400: GET response with error for sort_of query that column doesn`t exist ', () => {
+        return request(app)
+            .get("/api/reviews?sort_by=YYYY")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid order query');
+            })
+    });
+    it('400: GET response with error for order query not equal to asc or desc', () => {
+        return request(app)
+            .get("/api/reviews?sort_by=YYYY")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid order query');
+            })
+    });
+    it('400: GET response with error for category query that doesn`t exist', () => {
+        return request(app)
+            .get("/api/reviews?category=YYYY")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid order query');
+            })
+    });
+    it('400: GET response with error for category query that exist but has no review', () => {
+        return request(app)
+            .get("/api/reviews?category=children's games")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toEqual([]);
             })
     });
 });
