@@ -54,4 +54,8 @@ exports.patchReviewsByReview_id = (req, res, next) => {
     updateReviewsByReview_id(review_id, inc_votes).then((review) => {
         res.status(200).send({ review });
     })
+        .catch((err) => {
+            console.log(err)
+            next(err)
+        })
 };

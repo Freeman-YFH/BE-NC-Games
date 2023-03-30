@@ -183,7 +183,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
     });
 });
 
-describe('PATCH - /api/reviews/:review_id', () => {
+describe.only('PATCH - /api/reviews/:review_id', () => {
     it('200: PATCH response with updating the votes number equal to 1 for the input review_id', () => {
         const newVote = { inc_votes: 1 };
         return request(app)
@@ -228,6 +228,26 @@ describe('PATCH - /api/reviews/:review_id', () => {
                 });
                 const input = { votes: 1 }
                 expect(input.votes + newVote.inc_votes).toBe(review.votes);
+            })
+    });
+    it('404: PATCH response with error when input a ID doesn`t exist', () => {
+        const newVote = { inc_votes: 1 };
+        return request(app)
+            .patch("/api/reviews/999")
+            .send(newVote)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("resource not exist");
+            })
+    });
+    it.only('404: PATCH response with error when No `inc_votes` on request body', () => {
+        const newVote = {};
+        return request(app)
+            .patch("/api/reviews/1")
+            .send(newVote)
+            .expect(404)
+            .then(({ body }) => {
+                console.log(body)
             })
     });
 });

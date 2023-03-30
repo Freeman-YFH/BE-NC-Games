@@ -74,6 +74,10 @@ exports.updateReviewsByReview_id = (review_id, inc_votes) => {
         WHERE review_id = $1 RETURNING *;`,
             [review_id, inc_votes])
         .then(({ rows }) => {
+            console.log(rows)
+            if (rows.length === 0) {
+                return Promise.reject({ msg: "resource not exist", status: 404 })
+            }
             return (rows[0]);
         })
 };
