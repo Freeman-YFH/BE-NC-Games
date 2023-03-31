@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId, updateReviewsByReview_id, deleteComments, selectUsers } = require("../models/games.model");
+const { selectCategories, selectReviewById, selectReviews, selectCommentsByReviewId, checkReviewIdExist, insertCommentsByReviewId, updateReviewsByReview_id, deleteComments, selectUsers, checkCategoryExist } = require("../models/games.model");
 
 
 
@@ -24,10 +24,20 @@ exports.getReviewById = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-    selectReviews()
+    const { category } = req.query;
+    const { sort_by } = req.query;
+    const { order } = req.query;
+    selectReviews(category, sort_by, order)
         .then((review) => {
+            if (review.length === 0) {
+                return checkCategoryExist(category)
+            }
             res.status(200).send({ review });
-
+        }).then((review) => {
+            res.status(200).send({ review })
+        })
+        .catch((err) => {
+            next(err);
         });
 };
 
