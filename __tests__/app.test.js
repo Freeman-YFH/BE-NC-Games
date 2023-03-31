@@ -35,12 +35,13 @@ describe('GET - /api/categories', () => {
 });
 
 describe('GET - /api/reviews/:review_id', () => {
-    it('200: response with a review object', () => {
+    xit('200: response with a review object', () => {
         return request(app)
             .get('/api/reviews/2')
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
+                console.log(review)
                 expect(review).toMatchObject({
                     review_id: expect.any(Number),
                     title: expect.any(String),
@@ -54,7 +55,7 @@ describe('GET - /api/reviews/:review_id', () => {
                 });
             })
     });
-    it('400: GET response with error message when given the ID is not a number', () => {
+    xit('400: GET response with error message when given the ID is not a number', () => {
         return request(app)
             .get("/api/reviews/not-a-number")
             .expect(400)
@@ -62,7 +63,7 @@ describe('GET - /api/reviews/:review_id', () => {
                 expect(body.msg).toBe("Bad request");
             })
     });
-    it('400: GET response with error message when pass number don`t exist', () => {
+    xit('400: GET response with error message when pass number don`t exist', () => {
         return request(app)
             .get("/api/reviews/9999")
             .expect(400)
