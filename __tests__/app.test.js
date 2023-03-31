@@ -320,3 +320,129 @@ describe('GET - /api/users', () => {
             })
     });
 });
+
+describe('GET - /api/reviews (queries)', () => {
+    it('200: GET accept query by category value', () => {
+        return request(app)
+            .get("/api/reviews?category=dexterity")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toMatchObject({
+                    review_id: 2,
+                    title: 'Jenga',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_img_url:
+                        'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+                    category: 'dexterity',
+                    created_at: expect.any(String),
+                    votes: 5,
+                    comment_count: "3",
+                    review_id: 2
+                });
+            })
+    });
+    it('200: GET accept sort_by query that sort by any valid column (defaults to date) ', () => {
+        return request(app)
+            .get("/api/reviews?sort_by=votes")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+                expect(review).toBeSortedBy("votes", { descending: true });
+            })
+    });
+    it('200: GET accept order query that can be set to asc for ascending (defaults to descending)', () => {
+        return request(app)
+            .get("/api/reviews?order=asc")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+                expect(review).toBeSortedBy("created_at", { ascending: true });
+            })
+    });
+    it('200: GET accept order query that can be set to desc for descending', () => {
+        return request(app)
+            .get("/api/reviews?order=desc")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toHaveLength(13);
+                review.forEach((item) => {
+                    expect(item).toMatchObject({
+                        review_id: expect.any(Number),
+                        title: expect.any(String),
+                        designer: expect.any(String),
+                        owner: expect.any(String),
+                        review_img_url: expect.any(String),
+                        category: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        comment_count: expect.any(String)
+                    })
+                })
+                expect(review).toBeSortedBy("created_at", { descending: true });
+            })
+    });
+    it('404: GET response with error for sort_of query that column doesn`t exist ', () => {
+        return request(app)
+            .get("/api/reviews?sort_by=YYYY")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid order query');
+            })
+    });
+    it('400: GET response with error for order query not equal to asc or desc', () => {
+        return request(app)
+            .get("/api/reviews?order=YYYY")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid order query');
+            })
+    });
+    it('404: GET response with error for category query that doesn`t exist', () => {
+        return request(app)
+            .get("/api/reviews?category=YYYY")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("category not exist");
+            })
+    });
+    it('200: GET response with error for category query that exist but has no review', () => {
+        return request(app)
+            .get("/api/reviews?category=children's games")
+            .expect(200)
+            .then(({ body }) => {
+                const { review } = body;
+                expect(review).toEqual([]);
+            })
+    });
+});
