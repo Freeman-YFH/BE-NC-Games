@@ -33,6 +33,8 @@ app.use((err, req, res, next) => {
         res.status(404).send({ msg: "review not found" })
     } else if (err.code === "23502") {
         res.status(404).send({ msg: "resource not exist" })
+    } else if (err.code === "42703") {
+        res.status(404).send({ msg: "resource not exist" })
     }
     else if (err.status && err.msg) {
         res.status(err.status).send({ msg: err.msg })
