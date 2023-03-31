@@ -58,7 +58,6 @@ exports.checkCategoryExist = (category) => {
     return db
         .query(`SELECT * FROM categories WHERE slug = $1;`, [category])
         .then((data) => {
-            console.log(data.rows)
             if (data.rows.length === 0) {
                 return Promise.reject({ status: 404, msg: "category not exist" });
             }
