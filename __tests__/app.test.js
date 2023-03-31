@@ -421,18 +421,18 @@ describe('GET - /api/reviews (queries)', () => {
     });
     it('400: GET response with error for order query not equal to asc or desc', () => {
         return request(app)
-            .get("/api/reviews?sort_by=YYYY")
+            .get("/api/reviews?order=YYYY")
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe('Invalid order query');
             })
     });
-    it('400: GET response with error for category query that doesn`t exist', () => {
+    it('404: GET response with error for category query that doesn`t exist', () => {
         return request(app)
             .get("/api/reviews?category=YYYY")
-            .expect(400)
+            .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe('Invalid order query');
+                expect(body.msg).toBe("category not exist");
             })
     });
     it('200: GET response with error for category query that exist but has no review', () => {
@@ -440,7 +440,8 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?category=children's games")
             .expect(200)
             .then(({ body }) => {
-                expect(body.msg).toEqual([]);
+                const { review } = body;
+                expect(review).toEqual([]);
             })
     });
 });

@@ -21,9 +21,6 @@ exports.selectReviewById = (review_id) => {
 };
 
 exports.selectReviews = (category, sort_by, order) => {
-    if (category && !['euro game', 'social deduction', 'dexterity', "children's games"].includes(category)) {
-        return Promise.reject({ status: 400, msg: 'Invalid order query' });
-    };
 
     if (sort_by && !['review_id', 'title', 'designer', 'owner', 'review_img_url', 'category', 'created_at', 'votes', 'comment_count'].includes(sort_by)) {
         return Promise.reject({ status: 400, msg: 'Invalid order query' });
@@ -50,14 +47,23 @@ exports.selectReviews = (category, sort_by, order) => {
 
     return db.query(selectReviewsStr, queryValues)
         .then((data) => {
-            if (data.rows.length === 0) {
-                return Promise.reject({ status: 200, msg: [] });
-            }
             if (data.rows.length === 1) {
                 return data.rows[0];
             }
             return data.rows;
         });
+};
+
+exports.checkCategoryExist = (category) => {
+    return db
+        .query(`SELECT * FROM categories WHERE slug = $1;`, [category])
+        .then((data) => {
+            console.log(data.rows)
+            if (data.rows.length === 0) {
+                return Promise.reject({ status: 404, msg: "category not exist" });
+            }
+            return [];
+        })
 };
 
 exports.selectCommentsByReviewId = (review_id) => {
@@ -72,6 +78,7 @@ exports.checkReviewIdExist = (review_id) => {
     return db
         .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
         .then((data) => {
+
             if (data.rows.length === 0) {
                 return Promise.reject({ status: 404, msg: "review not found" });
             }
