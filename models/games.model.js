@@ -11,12 +11,15 @@ exports.selectCategories = () => {
 
 exports.selectReviewById = (review_id) => {
     return db
-        .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+        .query(`SELECT reviews.*, COUNT(comment_id)::INT AS comment_count
+        FROM reviews LEFT OUTER JOIN comments ON comments.review_id = reviews.review_id 
+        WHERE reviews.review_id = $1
+        GROUP BY reviews.review_id;`, [review_id])
         .then((data) => {
             if (data.rows.length === 0) {
                 return Promise.reject({ msg: "Invalid input", status: 400 })
             }
-            return data.rows[0]
+            return data.rows[0];
         });
 };
 
@@ -30,7 +33,7 @@ exports.selectReviews = (category, sort_by, order) => {
         return Promise.reject({ status: 400, msg: 'Invalid order query' });
     };
 
-    let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
+    let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id)::INT AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
     const queryValues = [];
 
     if (category) {

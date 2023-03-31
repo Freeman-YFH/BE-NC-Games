@@ -50,7 +50,8 @@ describe('GET - /api/reviews/:review_id', () => {
                     review_body: expect.any(String),
                     category: expect.any(String),
                     created_at: expect.any(String),
-                    votes: expect.any(Number)
+                    votes: expect.any(Number),
+                    comment_count: 3
                 });
             })
     });
@@ -88,7 +89,7 @@ describe('GET - /api/reviews', () => {
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(String)
+                        comment_count: expect.any(Number)
                     })
                 })
             })
@@ -337,7 +338,7 @@ describe('GET - /api/reviews (queries)', () => {
                     category: 'dexterity',
                     created_at: expect.any(String),
                     votes: 5,
-                    comment_count: "3",
+                    comment_count: 3,
                     review_id: 2
                 });
             })
@@ -359,7 +360,7 @@ describe('GET - /api/reviews (queries)', () => {
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(String)
+                        comment_count: expect.any(Number)
                     })
                 })
                 expect(review).toBeSortedBy("votes", { descending: true });
@@ -382,7 +383,7 @@ describe('GET - /api/reviews (queries)', () => {
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(String)
+                        comment_count: expect.any(Number)
                     })
                 })
                 expect(review).toBeSortedBy("created_at", { ascending: true });
@@ -405,7 +406,7 @@ describe('GET - /api/reviews (queries)', () => {
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(String)
+                        comment_count: expect.any(Number)
                     })
                 })
                 expect(review).toBeSortedBy("created_at", { descending: true });
