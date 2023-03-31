@@ -10,10 +10,13 @@ exports.selectCategories = () => {
 };
 
 exports.selectReviewById = (review_id) => {
-    console.log(review_id)
     return db
-        .query(`SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews
-        LEFT JOIN comments ON comments.review_id = reviews.review_id 
+        .query(`SELECT reviews.* ,
+        (SELECT count(*)::INT
+        FROM comments
+        WHERE comments.review_id = reviews.review_id) 
+        AS comment_count
+        FROM reviews 
         WHERE review_id = $1;`, [review_id])
         .then((data) => {
             if (data.rows.length === 0) {
