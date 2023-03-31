@@ -34,14 +34,13 @@ describe('GET - /api/categories', () => {
     });
 });
 
-describe.only('GET - /api/reviews/:review_id', () => {
+describe('GET - /api/reviews/:review_id', () => {
     it('200: response with a review object', () => {
         return request(app)
             .get('/api/reviews/2')
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
-                console.log(review)
                 expect(review).toMatchObject({
                     review_id: expect.any(Number),
                     title: expect.any(String),
@@ -51,7 +50,8 @@ describe.only('GET - /api/reviews/:review_id', () => {
                     review_body: expect.any(String),
                     category: expect.any(String),
                     created_at: expect.any(String),
-                    votes: expect.any(Number)
+                    votes: expect.any(Number),
+                    comment_count: expect.any(Number)
                 });
             })
     });
@@ -89,7 +89,7 @@ describe('GET - /api/reviews', () => {
                         category: expect.any(String),
                         created_at: expect.any(String),
                         votes: expect.any(Number),
-                        comment_count: expect.any(String)
+                        comment_count: expect.any(Number)
                     })
                 })
             })
