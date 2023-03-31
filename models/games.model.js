@@ -33,7 +33,7 @@ exports.selectReviews = (category, sort_by, order) => {
         return Promise.reject({ status: 400, msg: 'Invalid order query' });
     };
 
-    let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
+    let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id)::INT AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
     const queryValues = [];
 
     if (category) {
