@@ -51,7 +51,7 @@ exports.selectReviews = (category, sort_by, order) => {
     return db.query(selectReviewsStr, queryValues)
         .then((data) => {
             if (data.rows.length === 0) {
-                return Promise.reject({ status: 400, msg: [] });
+                return Promise.reject({ status: 200, msg: [] });
             }
             if (data.rows.length === 1) {
                 return data.rows[0];
