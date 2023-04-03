@@ -151,7 +151,6 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .expect(201)
             .then(({ body }) => {
                 const { comments } = body
-                console.log(comments)
                 expect(comments.body).toBe("Gaming is GOOD");
                 expect(comments).toMatchObject({
                     comment_id: expect.any(Number),
