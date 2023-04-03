@@ -40,7 +40,6 @@ describe('GET - /api/reviews/:review_id', () => {
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
-                console.log(review)
                 expect(review).toMatchObject({
                     review_id: expect.any(Number),
                     title: expect.any(String),
