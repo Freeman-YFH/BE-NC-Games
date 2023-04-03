@@ -3,7 +3,6 @@ const request = require("supertest");
 const app = require("../app");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
-const { string } = require("pg-format");
 const { user } = require("pg/lib/defaults");
 
 beforeEach(() => { return seed(testData) });
@@ -16,9 +15,9 @@ describe('GET - /api/categories', () => {
             .get('/api/categories')
             .expect(200)
             .then(({ body }) => {
-                const { result } = body
-                expect(result).toHaveLength(4);
-                result.forEach((item) => {
+                const { category } = body
+                expect(category).toHaveLength(4);
+                category.forEach((item) => {
                     expect(item).toHaveProperty('slug', expect.any(String));
                     expect(item).toHaveProperty("description", expect.any(String));
                 })
@@ -41,6 +40,7 @@ describe('GET - /api/reviews/:review_id', () => {
             .expect(200)
             .then(({ body }) => {
                 const { review } = body;
+                console.log(review)
                 expect(review).toMatchObject({
                     review_id: expect.any(Number),
                     title: expect.any(String),
@@ -150,9 +150,10 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(201)
             .then(({ body }) => {
-                const { comment } = body
-                expect(comment.body).toBe("Gaming is GOOD");
-                expect(comment).toMatchObject({
+                const { comments } = body
+                console.log(comments)
+                expect(comments.body).toBe("Gaming is GOOD");
+                expect(comments).toMatchObject({
                     comment_id: expect.any(Number),
                     body: expect.any(String),
                     votes: expect.any(Number),

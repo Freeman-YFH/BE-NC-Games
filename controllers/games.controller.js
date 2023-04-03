@@ -6,8 +6,8 @@ const { selectCategories, selectReviewById, selectReviews, selectCommentsByRevie
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
-        .then((result) => {
-            res.status(200).send({ result })
+        .then((category) => {
+            res.status(200).send({ category })
         })
         .catch(next);
 };
@@ -49,8 +49,8 @@ exports.getCommentsByReviewId = (req, res, next) => {
 
 exports.postCommentsByReviewId = (req, res, next) => {
     insertCommentsByReviewId(req.body, req.params)
-        .then((comment) => {
-            res.status(201).send({ comment })
+        .then((comments) => {
+            res.status(201).send({ comments })
         })
         .catch((err) => {
             next(err);
