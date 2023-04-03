@@ -46,6 +46,7 @@
                 "designer": "Akihisa Okui",
                 "owner": "happyamy2016",
                 "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "review_body": "Farmyard fun!",
                 "category": "hidden-roles",
                 "created_at": 1610964101251,
                 "votes": 5,
@@ -92,14 +93,37 @@
             "inc_votes": 1
         },
         "exampleResponse": {
-            "comments": {
-                "comment_id": 2,
-                "body": "EPIC board game!",
-                "votes": 13,
-                "author": "mallionaire",
+            "review": {
                 "review_id": 2,
-                "created_at": 1610965445410
+                "title": "One Night Ultimate Werewolf",
+                "designer": "Akihisa Okui",
+                "owner": "happyamy2016",
+                "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "review_body": "Farmyard fun!",
+                "category": "hidden-roles",
+                "created_at": 1610964101251,
+                "votes": 5
             }
         }
     },
+    "DELETE /api/comments/:comment_id": {
+        "description": "deletes the object of comments by comment_id",
+        "queries": [],
+        "exampleResponse": {
+            "response.status": 204
+        }
+    },
+    "GET /api/users": {
+        "description": "serves an array of users",
+        "queries": [],
+        "exampleResponse": {
+            "users": [
+                {
+                    "username": "philippaclaire9",
+                    "name": "philippa",
+                    "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+                }
+            ]
+        }
+    }
 }
