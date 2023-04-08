@@ -1,6 +1,7 @@
 const db = require("./db/connection");
 const express = require("express");
 const { getCategories, getReviewById, getReviews, getCommentsByReviewId, postCommentsByReviewId, patchReviewsByReview_id, deleteCommentsByCommentId, getUsers } = require("./controllers/games.controller");
+const { handleCustomError, handlePsqlError, handleServerError } = require("./error-handle-controllers/errorHandle");
 
 const app = express();
 
@@ -26,17 +27,10 @@ app.use('*', (req, res, next) => {
     res.status(404).send({ msg: "Invalid path" })
 });
 
-app.use((err, req, res, next) => {
-    if (err.code === "22P02") {
-        res.status(400).send({ msg: "Bad request" })
-    } else if (err.code === "23503") {
-        res.status(404).send({ msg: "review not found" })
-    } else if (err.code === "23502") {
-        res.status(404).send({ msg: "resource not exist" })
-    }
-    else if (err.status && err.msg) {
-        res.status(err.status).send({ msg: err.msg })
-    }
-});
+app.use(handleCustomError);
+app.use(handlePsqlError);
+app.use(handleServerError);
+
+
 
 module.exports = app;

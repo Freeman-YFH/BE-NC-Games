@@ -38,9 +38,10 @@ exports.getCommentsByReviewId = (req, res, next) => {
             if (comments.length === 0) {
                 return checkReviewIdExist(review_id)
             }
-            res.status(200).send({ comments });
-        }).then((comments) => {
-            res.status(200).send({ comments })
+            return res.status(200).send({ comments });
+        })
+        .then(() => {
+            return res.status(200).send({ comments: [] })
         })
         .catch((err) => {
             next(err)

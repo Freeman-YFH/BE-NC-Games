@@ -103,7 +103,7 @@ describe('GET - /api/reviews', () => {
     });
 });
 
-describe('GET - /api/reviews/:review_id/comments', () => {
+describe.only('GET - /api/reviews/:review_id/comments', () => {
     it('200: GET response with an array of comments for the given review_id', () => {
         return request(app)
             .get("/api/reviews/2/comments")
@@ -137,6 +137,15 @@ describe('GET - /api/reviews/:review_id/comments', () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("review not found");
+            })
+    });
+    it('200: GET response with ID exist but without comment', () => {
+        return request(app)
+            .get("/api/reviews/1/comments")
+            .expect(200)
+            .then(({ body }) => {
+                const { comments } = body;
+                expect(comments).toEqual([]);
             })
     });
 });
