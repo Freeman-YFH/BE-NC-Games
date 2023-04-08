@@ -61,16 +61,18 @@ exports.postCommentsByReviewId = (req, res, next) => {
 exports.patchReviewsByReview_id = (req, res, next) => {
     if ((Object.keys(req.body)).length != 1) {
         next(res.status(400).send({ msg: "Invalid input" }))
-    }
-    const { inc_votes } = req.body;
-    const { review_id } = req.params;
+    } else {
 
-    updateReviewsByReview_id(review_id, inc_votes).then((review) => {
-        res.status(200).send({ review });
-    })
-        .catch((err) => {
-            next(err);
-        });
+        const { inc_votes } = req.body;
+        const { review_id } = req.params;
+
+        updateReviewsByReview_id(review_id, inc_votes).then((review) => {
+            res.status(200).send({ review });
+        })
+            .catch((err) => {
+                next(err);
+            });
+    }
 };
 
 exports.deleteCommentsByCommentId = (req, res, next) => {

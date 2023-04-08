@@ -31,6 +31,4 @@ app.use(handleCustomError);
 app.use(handlePsqlError);
 app.use(handleServerError);
 
-
-
 module.exports = app;
