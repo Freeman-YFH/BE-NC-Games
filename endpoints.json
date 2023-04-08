@@ -29,7 +29,99 @@
                     "owner": "happyamy2016",
                     "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
                     "category": "hidden-roles",
-                    "created_at": 1610964101251,
+                    "created_at": 1610964101251
+                    "votes": 5,
+                    "comment_count": 2
+                }
+            ]
+        }
+    },
+    "GET /api/reviews/review_id": {
+        "description": "serves an object of specific review by review_id",
+        "queries": [],
+        "exampleResponse": {
+            "reviews": {
+                "review_id": 2,
+                "title": "One Night Ultimate Werewolf",
+                "designer": "Akihisa Okui",
+                "owner": "happyamy2016",
+                "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "review_body": "Farmyard fun!",
+                "category": "hidden-roles",
+                "created_at": 1610964101251,
+                "votes": 5,
+                "comment_count": 3
+            }
+        }
+    },
+    "GET /api/reviews/review_id/comments": {
+        "description": "serves an array of comments by review_id",
+        "queries": [],
+        "exampleResponse": {
+            "comments": {
+                "comment_id": 2,
+                "body": "Now this is a story all about how, board games turned my life upside down",
+                "votes": 13,
+                "author": "mallionaire",
+                "review_id": 2,
+                "created_at": 1610965445410
+            }
+        }
+    },
+    "POST /api/reviews/review_id/comments": {
+        "description": "adds an object of comments by review_id with valid username",
+        "queries": [],
+        "exampleRequestBody": {
+            "username": "bainesface",
+            "body": "EPIC board game!"
+        },
+        "exampleResponse": {
+            "comments": {
+                "comment_id": 2,
+                "body": "EPIC board game!",
+                "votes": 13,
+                "author": "mallionaire",
+                "review_id": 2,
+                "created_at": 1610965445410
+            }
+        }
+    },
+    "PATCH /api/reviews/review_id": {
+        "description": "updates the field of votes by review_id with an object",
+        "queries": [],
+        "examplePatchBody": {
+            "inc_votes": 1
+        },
+        "exampleResponse": {
+            "review": {
+                "review_id": 2,
+                "title": "One Night Ultimate Werewolf",
+                "designer": "Akihisa Okui",
+                "owner": "happyamy2016",
+                "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "review_body": "Farmyard fun!",
+                "category": "hidden-roles",
+                "created_at": 1610964101251,
+                "votes": 5
+            }
+        }
+    },
+    "DELETE /api/comments/:comment_id": {
+        "description": "deletes the object of comments by comment_id",
+        "queries": [],
+        "exampleResponse": {
+            "response.status": 204
+        }
+    },
+    "GET /api/users": {
+        "description": "serves an array of users",
+        "queries": [],
+        "exampleResponse": {
+            "users": [
+                {
+                    "username": "philippaclaire9",
+                    "name": "philippa",
+                    "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
                     "votes": 5
                 }
             ]
