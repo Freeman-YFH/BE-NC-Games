@@ -64,7 +64,6 @@ exports.checkCategoryExist = (category) => {
             if (data.rows.length === 0) {
                 return Promise.reject({ status: 404, msg: "category not exist" });
             }
-            return [];
         })
 };
 
@@ -80,7 +79,6 @@ exports.checkReviewIdExist = (review_id) => {
     return db
         .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
         .then((data) => {
-
             if (data.rows.length === 0) {
                 return Promise.reject({ status: 404, msg: "review not found" });
             }

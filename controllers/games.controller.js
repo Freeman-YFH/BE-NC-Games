@@ -27,31 +27,27 @@ exports.getReviews = (req, res, next) => {
     const { category } = req.query;
     const { sort_by } = req.query;
     const { order } = req.query;
-    selectReviews(category, sort_by, order)
-        .then((review) => {
-            if (review.length === 0) {
-                return checkCategoryExist(category)
-            }
-            res.status(200).send({ review });
-        }).then((review) => {
+
+    const reviewsPromise = [selectReviews(category, sort_by, order)];
+    if (category) {
+        reviewsPromise.push(checkCategoryExist(category))
+    }
+
+    return Promise.all(reviewsPromise)
+        .then(([review]) => {
             res.status(200).send({ review })
         })
         .catch((err) => {
-            next(err);
-        });
+            next(err)
+        })
 };
 
 exports.getCommentsByReviewId = (req, res, next) => {
     const { review_id } = req.params
-    return selectCommentsByReviewId(review_id)
-        .then((comments) => {
-            if (comments.length === 0) {
-                return checkReviewIdExist(review_id)
-            }
-            return res.status(200).send({ comments });
-        })
-        .then(() => {
-            return res.status(200).send({ comments: [] })
+    return Promise.all([checkReviewIdExist(review_id), selectCommentsByReviewId(review_id)])
+        .then((resolvedArray) => {
+            const comments = resolvedArray[1];
+            res.status(200).send({ comments });
         })
         .catch((err) => {
             next(err)

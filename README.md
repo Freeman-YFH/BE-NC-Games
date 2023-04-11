@@ -1,4 +1,4 @@
-Northcoders House of Games API
+# Northcoders House of Games API
 
 Instruction:
 
