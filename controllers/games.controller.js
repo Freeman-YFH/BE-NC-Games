@@ -66,7 +66,7 @@ exports.postCommentsByReviewId = (req, res, next) => {
 
 exports.patchReviewsByReview_id = (req, res, next) => {
     if ((Object.keys(req.body)).length != 1) {
-        next(res.status(400).send({ msg: "Invalid input" }))
+        next({ status: 400, msg: "Invalid input" })
     } else {
 
         const { inc_votes } = req.body;
