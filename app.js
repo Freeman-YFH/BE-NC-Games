@@ -2,8 +2,11 @@ const db = require("./db/connection");
 const express = require("express");
 const { getCategories, getReviewById, getReviews, getCommentsByReviewId, postCommentsByReviewId, patchReviewsByReview_id, deleteCommentsByCommentId, getUsers } = require("./controllers/games.controller");
 const { handleCustomError, handlePsqlError, handleServerError } = require("./error-handle-controllers/errorHandle");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
