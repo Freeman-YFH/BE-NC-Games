@@ -76,9 +76,9 @@ describe('GET - /api/reviews', () => {
             .get("/api/reviews")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toHaveLength(13);
-                review.forEach((item) => {
+                const { reviews } = body;
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((item) => {
                     expect(item).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
@@ -335,8 +335,8 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?category=dexterity")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toMatchObject({
+                const { reviews } = body;
+                expect(reviews).toMatchObject({
                     review_id: 2,
                     title: 'Jenga',
                     designer: 'Leslie Scott',
@@ -356,9 +356,9 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?sort_by=votes")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toHaveLength(13);
-                review.forEach((item) => {
+                const { reviews } = body;
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((item) => {
                     expect(item).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
@@ -371,7 +371,7 @@ describe('GET - /api/reviews (queries)', () => {
                         comment_count: expect.any(Number)
                     })
                 })
-                expect(review).toBeSortedBy("votes", { descending: true });
+                expect(reviews).toBeSortedBy("votes", { descending: true });
             })
     });
     it('200: GET accept order query that can be set to asc for ascending (defaults to descending)', () => {
@@ -379,9 +379,9 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?order=asc")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toHaveLength(13);
-                review.forEach((item) => {
+                const { reviews } = body;
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((item) => {
                     expect(item).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
@@ -394,7 +394,7 @@ describe('GET - /api/reviews (queries)', () => {
                         comment_count: expect.any(Number)
                     })
                 })
-                expect(review).toBeSortedBy("created_at", { ascending: true });
+                expect(reviews).toBeSortedBy("created_at", { ascending: true });
             })
     });
     it('200: GET accept order query that can be set to desc for descending', () => {
@@ -402,9 +402,9 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?order=desc")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toHaveLength(13);
-                review.forEach((item) => {
+                const { reviews } = body;
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((item) => {
                     expect(item).toMatchObject({
                         review_id: expect.any(Number),
                         title: expect.any(String),
@@ -417,7 +417,7 @@ describe('GET - /api/reviews (queries)', () => {
                         comment_count: expect.any(Number)
                     })
                 })
-                expect(review).toBeSortedBy("created_at", { descending: true });
+                expect(reviews).toBeSortedBy("created_at", { descending: true });
             })
     });
     it('404: GET response with error for sort_of query that column doesn`t exist ', () => {
@@ -449,8 +449,8 @@ describe('GET - /api/reviews (queries)', () => {
             .get("/api/reviews?category=children's games")
             .expect(200)
             .then(({ body }) => {
-                const { review } = body;
-                expect(review).toEqual([]);
+                const { reviews } = body;
+                expect(reviews).toEqual([]);
             })
     });
 });

@@ -34,8 +34,8 @@ exports.getReviews = (req, res, next) => {
     }
 
     return Promise.all(reviewsPromise)
-        .then(([review]) => {
-            res.status(200).send({ review })
+        .then(([reviews]) => {
+            res.status(200).send({ reviews })
         })
         .catch((err) => {
             next(err)
