@@ -177,7 +177,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("review not found");
+                expect(body.msg).toBe("Not found");
             })
     });
     it('404: POST response with error message when input a invalid username', () => {
@@ -187,7 +187,7 @@ describe('POST - /api/reviews/:review_id/comments', () => {
             .send(newComment)
             .expect(404)
             .then(({ body }) => {
-                expect(body.msg).toBe("review not found");
+                expect(body.msg).toBe("Not found");
             })
     });
 });
