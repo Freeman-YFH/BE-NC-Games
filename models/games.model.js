@@ -46,12 +46,15 @@ exports.selectReviews = (category, sort_by, order) => {
         GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
         queryValues.push(category);
     }
+    else if (sort_by && order) {
+        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
+    }
     else if (category) {
         selectReviewsStr += ` WHERE category = $1
         GROUP BY reviews.review_id ORDER BY created_at DESC;`;
         queryValues.push(category);
     } else if (sort_by) {
-        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`
+        selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
     } else if (order) {
         selectReviewsStr += ` GROUP BY reviews.review_id ORDER BY created_at ${order};`;
     } else {
