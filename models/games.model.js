@@ -36,13 +36,14 @@ exports.selectReviews = (category, sort_by, order) => {
     let selectReviewsStr = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, COUNT(comment_id)::INT AS comment_count FROM reviews LEFT JOIN comments on comments.review_id = reviews.review_id`;
     const queryValues = [];
 
-    if (category && sort_by) {
-        selectReviewsStr += ` WHERE category = $1
-        GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
-        queryValues.push(category);
-    } else if (category && sort_by && order) {
+    if (category && sort_by && order) {
         selectReviewsStr += ` WHERE category = $1
         GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
+        queryValues.push(category);
+    }
+    else if (category && sort_by) {
+        selectReviewsStr += ` WHERE category = $1
+        GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
         queryValues.push(category);
     }
     else if (category) {
