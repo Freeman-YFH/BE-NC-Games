@@ -40,7 +40,12 @@ exports.selectReviews = (category, sort_by, order) => {
         selectReviewsStr += ` WHERE category = $1
         GROUP BY reviews.review_id ORDER BY ${sort_by} DESC;`;
         queryValues.push(category);
-    } else if (category) {
+    } else if (category && sort_by && order) {
+        selectReviewsStr += ` WHERE category = $1
+        GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
+        queryValues.push(category);
+    }
+    else if (category) {
         selectReviewsStr += ` WHERE category = $1
         GROUP BY reviews.review_id ORDER BY created_at DESC;`;
         queryValues.push(category);
