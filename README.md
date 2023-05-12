@@ -17,3 +17,7 @@ npm install
 
 ## Live demo
 https://nc-game.onrender.com
+
+4. Minimum versions for Node.js and Postgres to run this repo
+Node: v19.4.0
+Postgres: 14.6
