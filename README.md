@@ -1,4 +1,4 @@
-# Northcoders House of Games API
+# Northcoders Games forum back-end project
 
 ## Background:
 
