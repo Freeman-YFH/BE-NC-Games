@@ -15,9 +15,9 @@ npm install
 
 3. To use this repo with specific database, please check .env-example for instruction. You will need to create 2 .env files for your project: .env.development and .env.test.
 
-## Live demo
-https://nc-game.onrender.com
-
-4. Minimum versions for Node.js and Postgres to run this repo
-Node: v19.4.0
+4. Minimum versions for Node.js and Postgres to run this repo<br>
+Node: v19.4.0<br>
 Postgres: 14.6
+
+## Live demo:
+https://nc-game.onrender.com
